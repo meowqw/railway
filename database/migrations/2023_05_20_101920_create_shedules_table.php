@@ -15,17 +15,15 @@ class CreateShedulesTable extends Migration
     {
         Schema::create('shedules', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->unsignedBigInteger('train_id');
-            $table->unsignedBigInteger('departure_location_id');
-            $table->unsignedBigInteger('arrival_location_id');
+            $table->unsignedBigInteger('departure_locality_id');
+            $table->unsignedBigInteger('arrival_locality_id');
             $table->dateTime('date');
             $table->integer('travel_time');
-            $table->timestamps();
 
             $table->foreign('train_id')->references('id')->on('trains');
-            $table->foreign('departure_location_id')->references('id')->on('localities');
-            $table->foreign('arrival_location_id')->references('id')->on('localities');
+            $table->foreign('departure_locality_id')->references('id')->on('localities');
+            $table->foreign('arrival_locality_id')->references('id')->on('localities');
             $table->timestamps();
         });
     }
