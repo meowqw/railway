@@ -5496,6 +5496,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       axios.get('/api/schedules').then(function (response) {
         _this.schedules = response.data.data;
+        console.log(_this.schedules);
       });
     },
     getTrains: function getTrains() {
@@ -5881,7 +5882,7 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("table", {
     staticClass: "table table-striped"
-  }, [_vm._m(0), _vm._v("\n    " + _vm._s(_vm.schedules) + "\n    "), _vm.schedules ? _c("tbody", _vm._l(_vm.schedules, function (schedule) {
+  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.schedules, function (schedule) {
     return _c("tr", [_c("th", {
       attrs: {
         scope: "row"
@@ -5914,7 +5915,7 @@ var render = function render() {
         }
       }
     }, [_vm._v("Удалить")])]) : _vm._e()]);
-  }), 0) : _vm._e(), _vm._v(" "), _vm.$parent.authenticated ? _c("tbody", [_c("tr", [_c("th"), _vm._v(" "), _c("th", [_c("select", {
+  }), 0), _vm._v(" "), _vm.$parent.authenticated ? _c("tbody", [_c("tr", [_c("th"), _vm._v(" "), _c("th", [_c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",

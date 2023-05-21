@@ -18,7 +18,7 @@ class Shedule extends Model
 
     public function to(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Locality::class, 'arrival_locality_idd');
+        return $this->belongsTo(Locality::class, 'arrival_locality_id');
     }
 
     public function train(): \Illuminate\Database\Eloquent\Relations\BelongsTo

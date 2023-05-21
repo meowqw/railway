@@ -10,8 +10,7 @@
             <th scope="col">Время в пути</th>
         </tr>
         </thead>
-        {{schedules}}
-        <tbody v-if="schedules">
+        <tbody>
         <tr v-for="schedule in schedules">
             <th scope="row">{{ schedule.id }}</th>
             <th scope="row">{{ schedule.train.number }}</th>
@@ -72,7 +71,9 @@ export default {
     methods: {
         getData() {
             axios.get('/api/schedules').then(response => {
+
                 this.schedules = response.data.data
+                console.log( this.schedules )
             });
         },
 
