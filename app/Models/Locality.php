@@ -13,11 +13,11 @@ class Locality extends Model
 
     public function departureSchedules(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Schedule::class, 'departure_location_id');
+        return $this->hasMany(Shedule::class, 'departure_location_id');
     }
 
     public function arrivalSchedules(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Schedule::class, 'arrival_location_id');
+        return $this->hasMany(Shedule::class, 'arrival_location_id');
     }
 }

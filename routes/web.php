@@ -22,3 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/{page}', 'IndexController');
+
+Route::get('/api/user', function () {
+    return response()->json(['authenticated' => Auth::check()]);
+})->middleware('auth');

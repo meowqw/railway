@@ -13,6 +13,6 @@ class Train extends Model
 
     public function shedules()
     {
-        return $this->hasMany(Shedule::class, );
+        return $this->hasMany(Shedule::class);
     }
 }

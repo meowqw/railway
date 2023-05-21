@@ -11,14 +11,14 @@ class Shedule extends Model
 
     protected $guarded = false;
 
-    public function departureLocation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function from(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Locality::class, 'departure_location_id');
+        return $this->belongsTo(Locality::class, 'departure_locality_id');
     }
 
-    public function arrivalLocation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function to(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Locality::class, 'arrival_location_id');
+        return $this->belongsTo(Locality::class, 'arrival_locality_idd');
     }
 
     public function train(): \Illuminate\Database\Eloquent\Relations\BelongsTo

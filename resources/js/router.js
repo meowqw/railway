@@ -14,7 +14,7 @@ export default new VueRouter({
 
     routes: [
         {
-            path: '/shedule',
+            path: '/schedule',
             component: SheduleComponent
         },
         {

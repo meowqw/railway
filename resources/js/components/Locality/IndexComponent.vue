@@ -3,29 +3,28 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Название</th>
+            <th scope="col">Удалить</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+        <tr v-for="locality in localities">
+            <th scope="row">{{ locality.id }}</th>
+            <th scope="row">{{ locality.name }}</th>
+            <td>
+                <button @click="deleteLocality(locality.id)" class="btn btn-danger">Удалить</button>
+            </td>
+
         </tr>
+        </tbody>
+
+        <tbody>
         <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <th><input v-model='localityForm.name' class="form-control" placeholder="Название" type="text"></th>
+            <th></th>
+            <th>
+                <button @click="addLocality" class="btn btn-success">Добавить</button>
+            </th>
         </tr>
         </tbody>
     </table>
@@ -33,7 +32,36 @@
 
 <script>
 export default {
-    name: "IndexLocalityComponent"
+    name: "IndexLocalityComponent",
+    data() {
+        return {
+            localities: null,
+            localityForm: {
+                name: null
+            }
+        }
+    },
+    methods: {
+        getData() {
+            axios.get('/api/localities').then(response => {
+                this.localities = response.data
+            });
+        },
+        addLocality() {
+            axios.post('/api/localities', this.localityForm).then(response => {
+                this.localities.push(response.data)
+            });
+        },
+        deleteLocality(id) {
+            axios.delete(`/api/localities/${id}`).then(response => {
+                let index = this.localities.map(item => item.id).indexOf(id);
+                this.localities.splice(index, 1);
+            });
+        }
+    },
+    mounted() {
+        this.getData()
+    }
 }
 </script>
 

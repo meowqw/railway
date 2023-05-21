@@ -5316,8 +5316,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Index",
+  data: function data() {
+    return {
+      authenticated: false
+    };
+  },
   components: {
     NavbarComponent: _NavbarComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  methods: {
+    checkAuthentication: function checkAuthentication() {
+      var _this = this;
+      axios.get('/api/user').then(function (response) {
+        _this.authenticated = response.data.authenticated;
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    }
   }
 });
 
@@ -5335,7 +5350,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "IndexInformationComponent"
+  name: "IndexInformationComponent",
+  data: function data() {
+    return {
+      information: null,
+      informationForm: {
+        title: null,
+        description: null
+      }
+    };
+  },
+  methods: {
+    getData: function getData() {
+      var _this = this;
+      axios.get('/api/information').then(function (response) {
+        _this.information = response.data;
+      });
+    },
+    addInformation: function addInformation() {
+      var _this2 = this;
+      axios.post('/api/information', this.informationForm).then(function (response) {
+        _this2.information.push(response.data);
+      });
+    },
+    deleteInformation: function deleteInformation(id) {
+      var _this3 = this;
+      axios["delete"]("/api/information/".concat(id)).then(function (response) {
+        var index = _this3.information.map(function (item) {
+          return item.id;
+        }).indexOf(id);
+        _this3.information.splice(index, 1);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getData();
+    this.$parent.checkAuthentication();
+  }
 });
 
 /***/ }),
@@ -5352,7 +5403,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "IndexLocalityComponent"
+  name: "IndexLocalityComponent",
+  data: function data() {
+    return {
+      localities: null,
+      localityForm: {
+        name: null
+      }
+    };
+  },
+  methods: {
+    getData: function getData() {
+      var _this = this;
+      axios.get('/api/localities').then(function (response) {
+        _this.localities = response.data;
+      });
+    },
+    addLocality: function addLocality() {
+      var _this2 = this;
+      axios.post('/api/localities', this.localityForm).then(function (response) {
+        _this2.localities.push(response.data);
+      });
+    },
+    deleteLocality: function deleteLocality(id) {
+      var _this3 = this;
+      axios["delete"]("/api/localities/".concat(id)).then(function (response) {
+        var index = _this3.localities.map(function (item) {
+          return item.id;
+        }).indexOf(id);
+        _this3.localities.splice(index, 1);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getData();
+  }
 });
 
 /***/ }),
@@ -5391,7 +5476,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "IndexSheduleComponent"
+  name: "IndexScheduleComponent",
+  data: function data() {
+    return {
+      schedules: null,
+      localities: null,
+      trains: null,
+      scheduleForm: {
+        train_id: null,
+        departure_locality_id: null,
+        arrival_locality_id: null,
+        date: null,
+        travel_time: null
+      }
+    };
+  },
+  methods: {
+    getData: function getData() {
+      var _this = this;
+      axios.get('/api/schedules').then(function (response) {
+        _this.schedules = response.data.data;
+      });
+    },
+    getTrains: function getTrains() {
+      var _this2 = this;
+      axios.get('/api/localities').then(function (response) {
+        _this2.localities = response.data;
+      });
+    },
+    getLocality: function getLocality() {
+      var _this3 = this;
+      axios.get('/api/trains').then(function (response) {
+        _this3.trains = response.data;
+      });
+    },
+    addSchedules: function addSchedules() {
+      var _this4 = this;
+      axios.post('/api/schedules', this.scheduleForm).then(function (response) {
+        _this4.schedules.push(response.data.data);
+      });
+    },
+    deleteSchedule: function deleteSchedule(id) {
+      var _this5 = this;
+      axios["delete"]("/api/schedules/".concat(id)).then(function (response) {
+        var index = _this5.schedules.map(function (item) {
+          return item.id;
+        }).indexOf(id);
+        _this5.schedules.splice(index, 1);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getData();
+    this.getTrains();
+    this.getLocality();
+    this.$parent.checkAuthentication();
+  }
 });
 
 /***/ }),
@@ -5408,7 +5548,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "IndexTrainComponent"
+  name: "IndexTrainComponent",
+  data: function data() {
+    return {
+      trains: null,
+      trainForm: {
+        number: null
+      }
+    };
+  },
+  methods: {
+    getData: function getData() {
+      var _this = this;
+      axios.get('/api/trains').then(function (response) {
+        _this.trains = response.data;
+      });
+    },
+    addTrain: function addTrain() {
+      var _this2 = this;
+      axios.post('/api/trains', this.trainForm).then(function (response) {
+        _this2.trains.push(response.data);
+      });
+    },
+    deleteTrain: function deleteTrain(id) {
+      var _this3 = this;
+      axios["delete"]("/api/trains/".concat(id)).then(function (response) {
+        var index = _this3.trains.map(function (item) {
+          return item.id;
+        }).indexOf(id);
+        _this3.trains.splice(index, 1);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getData();
+  }
 });
 
 /***/ }),
@@ -5430,9 +5604,15 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "p-5"
-  }, [_c("NavbarComponent"), _vm._v(" "), _c("router-view")], 1);
+  }, [_vm._m(0), _vm._v(" "), _c("NavbarComponent"), _vm._v(" "), _c("router-view")], 1);
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("h2", [_vm._v("Расписание и информация ЖД вокзала "), _c("span", {
+    staticClass: "badge badge-secondary"
+  }, [_vm._v("New")])]);
+}];
 render._withStripped = true;
 
 
@@ -5453,11 +5633,6 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm._m(0);
-};
-var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
   return _c("table", {
     staticClass: "table table-striped"
   }, [_c("thead", [_c("tr", [_c("th", {
@@ -5468,28 +5643,85 @@ var staticRenderFns = [function () {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("First")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Заголовок")]), _vm._v(" "), _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Last")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Описание")]), _vm._v(" "), _vm.$parent.authenticated ? _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Handle")])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", {
+  }, [_vm._v("Удалить")]) : _vm._e()])]), _vm._v(" "), _c("tbody", _vm._l(_vm.information, function (info) {
+    return _c("tr", [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(info.id))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(info.title))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(info.description))]), _vm._v(" "), _vm.$parent.authenticated ? _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.deleteInformation(info.id);
+        }
+      }
+    }, [_vm._v("Удалить")])]) : _vm._e()]);
+  }), 0), _vm._v(" "), _vm.$parent.authenticated ? _c("tbody", [_c("tr", [_c("th", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.informationForm.title,
+      expression: "informationForm.title"
+    }],
+    staticClass: "form-control",
     attrs: {
-      scope: "row"
+      placeholder: "Заголовок",
+      type: "text"
+    },
+    domProps: {
+      value: _vm.informationForm.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.informationForm, "title", $event.target.value);
+      }
     }
-  }, [_vm._v("1")]), _vm._v(" "), _c("td", [_vm._v("Mark")]), _vm._v(" "), _c("td", [_vm._v("Otto")]), _vm._v(" "), _c("td", [_vm._v("@mdo")])]), _vm._v(" "), _c("tr", [_c("th", {
+  })]), _vm._v(" "), _c("th", [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.informationForm.description,
+      expression: "informationForm.description"
+    }],
+    staticClass: "form-control",
     attrs: {
-      scope: "row"
+      placeholder: "Описание",
+      type: "text"
+    },
+    domProps: {
+      value: _vm.informationForm.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.informationForm, "description", $event.target.value);
+      }
     }
-  }, [_vm._v("2")]), _vm._v(" "), _c("td", [_vm._v("Jacob")]), _vm._v(" "), _c("td", [_vm._v("Thornton")]), _vm._v(" "), _c("td", [_vm._v("@fat")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
+  })]), _vm._v(" "), _c("th"), _vm._v(" "), _c("th", [_c("button", {
+    staticClass: "btn btn-success",
+    on: {
+      click: _vm.addInformation
     }
-  }, [_vm._v("3")]), _vm._v(" "), _c("td", [_vm._v("Larry")]), _vm._v(" "), _c("td", [_vm._v("the Bird")]), _vm._v(" "), _c("td", [_vm._v("@twitter")])])])]);
-}];
+  }, [_vm._v("Добавить")])])])]) : _vm._e()]);
+};
+var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -5510,14 +5742,57 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm._m(0);
+  return _c("table", {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.localities, function (locality) {
+    return _c("tr", [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(locality.id))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(locality.name))]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.deleteLocality(locality.id);
+        }
+      }
+    }, [_vm._v("Удалить")])])]);
+  }), 0), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.localityForm.name,
+      expression: "localityForm.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Название",
+      type: "text"
+    },
+    domProps: {
+      value: _vm.localityForm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.localityForm, "name", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("th"), _vm._v(" "), _c("th", [_c("button", {
+    staticClass: "btn btn-success",
+    on: {
+      click: _vm.addLocality
+    }
+  }, [_vm._v("Добавить")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("table", {
-    staticClass: "table table-striped"
-  }, [_c("thead", [_c("tr", [_c("th", {
+  return _c("thead", [_c("tr", [_c("th", {
     attrs: {
       scope: "col"
     }
@@ -5525,27 +5800,11 @@ var staticRenderFns = [function () {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("First")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Название")]), _vm._v(" "), _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Last")]), _vm._v(" "), _c("th", {
-    attrs: {
-      scope: "col"
-    }
-  }, [_vm._v("Handle")])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("1")]), _vm._v(" "), _c("td", [_vm._v("Mark")]), _vm._v(" "), _c("td", [_vm._v("Otto")]), _vm._v(" "), _c("td", [_vm._v("@mdo")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("2")]), _vm._v(" "), _c("td", [_vm._v("Jacob")]), _vm._v(" "), _c("td", [_vm._v("Thornton")]), _vm._v(" "), _c("td", [_vm._v("@fat")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("3")]), _vm._v(" "), _c("td", [_vm._v("Larry")]), _vm._v(" "), _c("td", [_vm._v("the Bird")]), _vm._v(" "), _c("td", [_vm._v("@twitter")])])])]);
+  }, [_vm._v("Удалить")])])]);
 }];
 render._withStripped = true;
 
@@ -5571,57 +5830,33 @@ var render = function render() {
     staticClass: "nav nav-tabs"
   }, [_c("li", {
     staticClass: "nav-item"
-  }, [_c("a", {
+  }, [_c("router-link", {
     "class": _vm.checkPath("/information") ? "nav-link activate" : "nav-link",
     attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.$router.push("/information");
-      }
+      to: "information"
     }
-  }, [_vm._v("Иноформация")])]), _vm._v(" "), _c("li", {
+  }, [_vm._v("\n            Информация\n        ")])], 1), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
-  }, [_c("a", {
-    "class": _vm.checkPath("/shedule") ? "nav-link activate" : "nav-link",
+  }, [_c("router-link", {
+    "class": _vm.checkPath("/schedule") ? "nav-link activate" : "nav-link",
     attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.$router.push("/shedule");
-      }
+      to: "schedule"
     }
-  }, [_vm._v("Расписание")])]), _vm._v(" "), _c("li", {
+  }, [_vm._v("\n            Расписание\n        ")])], 1), _vm._v(" "), _vm.$parent.authenticated ? _c("li", {
     staticClass: "nav-item"
-  }, [_c("a", {
+  }, [_c("router-link", {
     "class": _vm.checkPath("/train") ? "nav-link activate" : "nav-link",
     attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.$router.push("/train");
-      }
+      to: "train"
     }
-  }, [_vm._v("Поезда")])]), _vm._v(" "), _c("li", {
+  }, [_vm._v("\n            Поезда\n        ")])], 1) : _vm._e(), _vm._v(" "), _vm.$parent.authenticated ? _c("li", {
     staticClass: "nav-item"
-  }, [_c("a", {
+  }, [_c("router-link", {
     "class": _vm.checkPath("/locality") ? "nav-link activate" : "nav-link",
     attrs: {
-      href: "#"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.$router.push("/locality");
-      }
+      to: "locality"
     }
-  }, [_vm._v("Населенные\n        пункты")])])]);
+  }, [_vm._v("\n            Населенные пункты\n        ")])], 1) : _vm._e()]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5644,14 +5879,178 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm._m(0);
+  return _c("table", {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v("\n    " + _vm._s(_vm.schedules) + "\n    "), _vm.schedules ? _c("tbody", _vm._l(_vm.schedules, function (schedule) {
+    return _c("tr", [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.id))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.train.number))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.from.name))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.to.name))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.date))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(schedule.travel_time))]), _vm._v(" "), _vm.$parent.authenticated ? _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.deleteSchedule(schedule.id);
+        }
+      }
+    }, [_vm._v("Удалить")])]) : _vm._e()]);
+  }), 0) : _vm._e(), _vm._v(" "), _vm.$parent.authenticated ? _c("tbody", [_c("tr", [_c("th"), _vm._v(" "), _c("th", [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.scheduleForm.train_id,
+      expression: "scheduleForm.train_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "train"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.scheduleForm, "train_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, _vm._l(_vm.trains, function (train) {
+    return _c("option", {
+      domProps: {
+        value: train.id
+      }
+    }, [_vm._v(_vm._s(train.number))]);
+  }), 0)]), _vm._v(" "), _c("th", [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.scheduleForm.departure_locality_id,
+      expression: "scheduleForm.departure_locality_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "from"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.scheduleForm, "departure_locality_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, _vm._l(_vm.localities, function (locality) {
+    return _c("option", {
+      domProps: {
+        value: locality.id
+      }
+    }, [_vm._v(_vm._s(locality.name))]);
+  }), 0)]), _vm._v(" "), _c("th", [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.scheduleForm.arrival_locality_id,
+      expression: "scheduleForm.arrival_locality_id"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "to"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.scheduleForm, "arrival_locality_id", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, _vm._l(_vm.localities, function (locality) {
+    return _c("option", {
+      domProps: {
+        value: locality.id
+      }
+    }, [_vm._v(_vm._s(locality.name))]);
+  }), 0)]), _vm._v(" "), _c("th", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.scheduleForm.date,
+      expression: "scheduleForm.date"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Дата отправления",
+      type: "date"
+    },
+    domProps: {
+      value: _vm.scheduleForm.date
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.scheduleForm, "date", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("th", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.scheduleForm.travel_time,
+      expression: "scheduleForm.travel_time"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Время в пути",
+      type: "number"
+    },
+    domProps: {
+      value: _vm.scheduleForm.travel_time
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.scheduleForm, "travel_time", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("th", [_c("button", {
+    staticClass: "btn btn-success",
+    on: {
+      click: _vm.addSchedules
+    }
+  }, [_vm._v("Добавить")])])])]) : _vm._e()]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("table", {
-    staticClass: "table table-striped"
-  }, [_c("thead", [_c("tr", [_c("th", {
+  return _c("thead", [_c("tr", [_c("th", {
     attrs: {
       scope: "col"
     }
@@ -5659,27 +6058,23 @@ var staticRenderFns = [function () {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("First")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Поезд")]), _vm._v(" "), _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Last")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("От куда")]), _vm._v(" "), _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Handle")])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", {
+  }, [_vm._v("Куда")]), _vm._v(" "), _c("th", {
     attrs: {
-      scope: "row"
+      scope: "col"
     }
-  }, [_vm._v("1")]), _vm._v(" "), _c("td", [_vm._v("Mark")]), _vm._v(" "), _c("td", [_vm._v("Otto")]), _vm._v(" "), _c("td", [_vm._v("@mdo")])]), _vm._v(" "), _c("tr", [_c("th", {
+  }, [_vm._v("Время отправления")]), _vm._v(" "), _c("th", {
     attrs: {
-      scope: "row"
+      scope: "col"
     }
-  }, [_vm._v("2")]), _vm._v(" "), _c("td", [_vm._v("Jacob")]), _vm._v(" "), _c("td", [_vm._v("Thornton")]), _vm._v(" "), _c("td", [_vm._v("@fat")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("3")]), _vm._v(" "), _c("td", [_vm._v("Larry")]), _vm._v(" "), _c("td", [_vm._v("the Bird")]), _vm._v(" "), _c("td", [_vm._v("@twitter")])])])]);
+  }, [_vm._v("Время в пути")])])]);
 }];
 render._withStripped = true;
 
@@ -5701,14 +6096,57 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm._m(0);
+  return _c("table", {
+    staticClass: "table table-striped"
+  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.trains, function (train) {
+    return _c("tr", [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(train.id))]), _vm._v(" "), _c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(train.number))]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.deleteTrain(train.id);
+        }
+      }
+    }, [_vm._v("Удалить")])])]);
+  }), 0), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.trainForm.number,
+      expression: "trainForm.number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      placeholder: "Номер поезда",
+      type: "text"
+    },
+    domProps: {
+      value: _vm.trainForm.number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.trainForm, "number", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("th"), _vm._v(" "), _c("th", [_c("button", {
+    staticClass: "btn btn-success",
+    on: {
+      click: _vm.addTrain
+    }
+  }, [_vm._v("Добавить")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("table", {
-    staticClass: "table table-striped"
-  }, [_c("thead", [_c("tr", [_c("th", {
+  return _c("thead", [_c("tr", [_c("th", {
     attrs: {
       scope: "col"
     }
@@ -5716,27 +6154,11 @@ var staticRenderFns = [function () {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("First")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Номер")]), _vm._v(" "), _c("th", {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Last")]), _vm._v(" "), _c("th", {
-    attrs: {
-      scope: "col"
-    }
-  }, [_vm._v("Handle")])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("1")]), _vm._v(" "), _c("td", [_vm._v("Mark")]), _vm._v(" "), _c("td", [_vm._v("Otto")]), _vm._v(" "), _c("td", [_vm._v("@mdo")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("2")]), _vm._v(" "), _c("td", [_vm._v("Jacob")]), _vm._v(" "), _c("td", [_vm._v("Thornton")]), _vm._v(" "), _c("td", [_vm._v("@fat")])]), _vm._v(" "), _c("tr", [_c("th", {
-    attrs: {
-      scope: "row"
-    }
-  }, [_vm._v("3")]), _vm._v(" "), _c("td", [_vm._v("Larry")]), _vm._v(" "), _c("td", [_vm._v("the Bird")]), _vm._v(" "), _c("td", [_vm._v("@twitter")])])])]);
+  }, [_vm._v("Удалить")])])]);
 }];
 render._withStripped = true;
 
@@ -5835,7 +6257,7 @@ vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: 'history',
   routes: [{
-    path: '/shedule',
+    path: '/schedule',
     component: _components_Shedule_IndexComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }, {
     path: '/train',
